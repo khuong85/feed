@@ -1,0 +1,63 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<div class="container">
+    <h1>Feeds list</h1>
+
+    <table class="table table-condensed">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Title</th>
+                <th>Description</th>
+                <th>Link</th>
+                <th>Category</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for feed in feeds %}
+            <tr>
+                <td><a href="{{ path('feed_detail', { 'id': feed.id }) }}">{{ feed.id }}</a></td>
+                <td>{{ feed.title }}</td>
+                <td>{{ feed.description }}</td>
+                <td>{{ feed.link }}</td>
+                <td>{{ feed.category }}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('feed_detail', { 'id': feed.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('feed_edit', { 'id': feed.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    {% if paginate['lastPage'] > 1 %}
+    <div class="text-center">
+        <ul class="pagination">
+            <li><a href="{{ path('feed_index', {'page': paginate['previousPage']}) }}" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>
+            {% for page in 1..paginate['lastPage'] %}
+                {% if page == paginate['curPage'] %}
+                    <li class="active"><a href="#">{{ page }} <span class="sr-only">(current)</span></a></li>
+                {% else %}
+                    <li><a href="{{ path('feed_index', {'page': page}) }}">{{ page }}</a></li>
+                {% endif %}
+            {% endfor %}
+            <li><a href="{{ path('feed_index', {'page': paginate['nextPage']}) }}" aria-label="Next"><span aria-hidden="true">&raquo;</span></a></li>
+        </ul>
+    </div>
+    {% endif %}
+
+    <ul>
+        <li>
+            <a href="{{ path('feed_new') }}">Create a new feed</a>
+        </li>
+    </ul>
+</div>
+{% endblock %}
